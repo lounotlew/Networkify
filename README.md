@@ -1,4 +1,4 @@
-# Networkify - Graph Builder and Analyzer for Systems and Networks
+# Networkify - Graph Builder and Analyzer for Networks and Systems
 > Written by Lewis Kim
 
 ### Description

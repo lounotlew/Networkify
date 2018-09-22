@@ -97,7 +97,78 @@ static class UndirectedGraph {
 
 
 static class DirectedGraph {
+	
+	/** Adjacency list using a hashmap of hashmaps to represent a vertex and all of its edges/edge weights.
 
+		Example:
+		{"v1": {"v2":2, "v3" 2}, "v2": {"v1": }, ...} **/
+	HashMap<String, HashMap<String, Double>> adjacencyList;
+
+
+	public UWGraph(String root) {
+		this.adjacencyList = new HashMap<>();
+		this.adjacencyList.put(root, new HashMap<String, Double>());
+	}
+
+
+	/** Add a vertex V to this graph. **/
+	public void addVertex(String v) {
+		if (this.adjacencyList.containsKey(v)) {
+			throw new IllegalArgumentException("This graph already has that vertex.");
+		}
+
+		this.adjacencyList.put(v, new HashMap<String, Double>());
+	}
+
+
+	/** Remove a vertex V and ALL of its associated edges. **/
+	public void removeVertex(String v) {
+		if (this.adjacencyList.containsKey(v)) {
+			throw new IllegalArgumentException("This graph already has that vertex.");
+		}
+
+		for (String vertex : this.adjacencyList.entrySet()) {
+			vertex.remove(v)
+		}
+
+		this.adjacencyList.remove(v)
+	}
+
+
+	/** Add an edge between vertices V and U, with weight WEIGHT. **/
+	public void addEdge(String v, String u, Double weight) {
+		if (!this.adjacencyList.containsKey(v)) {
+			throw new IllegalArgumentException("This graph does not contain the vertex " + v + ".");
+		} else if (!this.adjacencyList.containsKey(u)) {
+			throw new IllegalArgumentException("This graph does not contain the vertex " + u + ".");
+		}
+
+		this.adjacencyList.get(v).put(u, weight);
+	}
+
+
+	/** Remove an edge between vertex V and U. **/
+	public void removeEdge(String v, String u, Double weight) {
+		if (!this.adjacencyList.containsKey(v)) {
+			throw new IllegalArgumentException("This graph does not contain the vertex " + v + ".");
+		} else if (!this.adjacencyList.containsKey(u)) {
+			throw new IllegalArgumentException("This graph does not contain the vertex " + u + ".");
+		}
+
+		this.adjacencyList.get(v).remove(u);
+	}
+
+
+	/** Replace the edge weight between vertex V and U with new weight, WEIGHT. **/
+	public void replaceWeight(String v, String u, Double weight) {
+		if (!this.adjacencyList.containsKey(v)) {
+			throw new IllegalArgumentException("This graph does not contain the vertex " + v + ".");
+		} else if (!this.adjacencyList.containsKey(u)) {
+			throw new IllegalArgumentException("This graph does not contain the vertex " + u + ".");
+		}
+
+		this.adjacencyList.get(v).replace(u, weight);
+	}
 
 
 }

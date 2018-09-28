@@ -149,15 +149,17 @@ public class DirectedGraph {
 
 
 
-	/** Run Dijkstra's Algorithm on this weighted directed graph from the
-	    root node S. 
+	/** Run Dijkstra's Algorithm on this weighted directed graph from the root node S. 
 
 	    Note: Dijkstra's may not work if there are any negative cycles.
-	    Using a priority queue implementation will speed up this algorithm
-	    drastically. **/
+	    Using a priority queue implementation will speed up this algorithm. **/
 	public LinkedHashMap dijkstra(String s) {
+		if (!this.adjacencyList.keySet().contains(s)) {
+			throw new IllegalArgumentException(s + " is not a vertex of this graph.");
+		}
+
 		LinkedHashMap<String, Double> dist = new LinkedHashMap<>();
-		LinkedHashMap<String, ArrayList<String>> prev = new LinkedHashMap<>();
+		LinkedHashMap<String, String> prev = new LinkedHashMap<>();
 		PriorityQueue<MyEntry<String, Double>> queue = new PriorityQueue<>(Comparator.comparing(entry -> entry.getValue()));
 
 		dist.put(s, (double) 0);
@@ -166,7 +168,7 @@ public class DirectedGraph {
 			if (v != s) {
 				dist.put(v, Double.POSITIVE_INFINITY);
 			}
-			prev.put(v, new ArrayList<>());
+			prev.put(v, null);
 			queue.add(new MyEntry<>(v, dist.get(v)));
 		}
 
@@ -179,7 +181,7 @@ public class DirectedGraph {
 
 				if (alt < dist.get(v)) {
 					dist.put(v, alt);
-					prev.get(v).add(u);
+					prev.put(v, u);
 
 					queue.remove(v);
 					queue.add(new MyEntry<>(v, dist.get(v)));
@@ -191,12 +193,61 @@ public class DirectedGraph {
 	}
 
 
-	/** Return a DOUBLE shortest path from start node S to end node X using
-	    Dijkstra's Algorithm. **/
-	// public double dijkstraShortestPath(String s, String x) {
+	/** Return an ArrayList that contains the vertices that form the shortest path from S to X in order. **/
+	public ArrayList shortestPath(String s, String x) {
+		if (!this.adjacencyList.keySet().contains(s)) {
+			throw new IllegalArgumentException(s + " is not a vertex of this graph.");
+		} else if (!this.adjacencyList.keySet().contains(x)) {
+			throw new IllegalArgumentException(x + " is not a vertex of this graph.");
+		}
 
+		LinkedHashMap<String, Double> dist = new LinkedHashMap<>();
+		LinkedHashMap<String, String> prev = new LinkedHashMap<>();
+		PriorityQueue<MyEntry<String, Double>> queue = new PriorityQueue<>(Comparator.comparing(entry -> entry.getValue()));
+		ArrayList<String> sequence = new ArrayList<>();
 
-	// }
+		dist.put(s, (double) 0);
+
+		for (String v : this.adjacencyList.keySet()) {
+			if (v != s) {
+				dist.put(v, Double.POSITIVE_INFINITY);
+			}
+			prev.put(v, null);
+			queue.add(new MyEntry<>(v, dist.get(v)));
+		}
+
+		while (!queue.isEmpty()) {
+			String u = queue.poll().getKey();
+
+			if (u == x) {
+				if (prev.get(u) != null || u == s) {
+					while (u != null) {
+						sequence.add(u);
+						u = prev.get(u);
+					}
+					Collections.reverse(sequence);
+					return sequence;
+				}
+			}
+
+			Set<String> neighbors = this.adjacencyList.get(u).keySet();
+
+			for (String v : neighbors) {
+				double alt = dist.get(u) + this.adjacencyList.get(u).get(v);
+
+				if (alt < dist.get(v)) {
+					dist.put(v, alt);
+					prev.put(v, u);
+
+					queue.remove(v);
+					queue.add(new MyEntry<>(v, dist.get(v)));
+				}
+			}
+		}
+
+		Collections.reverse(sequence);
+		return sequence;
+	}
 
 
 

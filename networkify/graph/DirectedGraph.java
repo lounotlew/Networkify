@@ -2,13 +2,52 @@
 //
 // Written by Lewis Kim.
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashMap.*;
-import java.util.HashSet;
+import java.util.*;
+
+// import java.util.LinkedHashMap;
+// import java.util.LinkedHashMap.*;
+// import java.util.HashMap;
+// import java.util.HashSet;
+// import java.util.Set;
+// import java.util.ArrayList;
+// import java.util.ArrayList.*;
+// import java.util.PriorityQueue;
+// import java.util.PriorityQueue.*;
+
+// import java.lang.Double;
+// import java.lang.Double.*;
 
 
 // Class of a weighted undirected graph using adjacency list representation through HashMaps.
 public class DirectedGraph {
+
+	final class MyEntry<K, V> implements Map.Entry<K, V> {
+    	private final K key;
+    	private V value;
+
+    	public MyEntry(K key, V value) {
+        	this.key = key;
+        	this.value = value;
+    	}
+
+    	@Override
+    	public K getKey() {
+        	return key;
+    	}
+
+    	@Override
+    	public V getValue() {
+        	return value;
+    	}
+
+    	@Override
+    	public V setValue(V value) {
+        	V old = this.value;
+        	this.value = value;
+        	return old;
+    	}
+	}
+
 
 	/** Adjacency list using a hashmap of hashmaps to represent a vertex and all of its edges/edge weights.
 
@@ -18,8 +57,10 @@ public class DirectedGraph {
 		Vertices are represented as strings (for their labels) instead of integers (e.g. 1 for vertex 1) for
 		clarity and better UX. **/
 	LinkedHashMap<String, LinkedHashMap<String, Double>> adjacencyList;
-
 	String id;
+
+
+
 
 
 	public DirectedGraph(String root) {
@@ -104,7 +145,58 @@ public class DirectedGraph {
 
 
 
-	// Djikstra's.
+	// Dijkstra's.
+
+
+
+	/** Run Dijkstra's Algorithm on this weighted directed graph from the
+	    root node S. 
+
+	    Note: Dijkstra's may not work if there are any negative cycles.
+	    Using a priority queue implementation will speed up this algorithm
+	    drastically. **/
+	public LinkedHashMap dijkstra(String s) {
+		LinkedHashMap<String, Double> dist = new LinkedHashMap<>();
+		LinkedHashMap<String, ArrayList<String>> prev = new LinkedHashMap<>();
+		PriorityQueue<MyEntry<String, Double>> queue = new PriorityQueue<>(Comparator.comparing(entry -> entry.getValue()));
+
+		dist.put(s, (double) 0);
+
+		for (String v : this.adjacencyList.keySet()) {
+			if (v != s) {
+				dist.put(v, Double.POSITIVE_INFINITY);
+			}
+			prev.put(v, new ArrayList<>());
+			queue.add(new MyEntry<>(v, dist.get(v)));
+		}
+
+		while (!queue.isEmpty()) {
+			String u = queue.poll().getKey();
+			Set<String> neighbors = this.adjacencyList.get(u).keySet();
+
+			for (String v : neighbors) {
+				double alt = dist.get(u) + this.adjacencyList.get(u).get(v);
+
+				if (alt < dist.get(v)) {
+					dist.put(v, alt);
+					prev.get(v).add(u);
+
+					queue.remove(v);
+					queue.add(new MyEntry<>(v, dist.get(v)));
+				}
+			}
+		}
+
+		return dist;
+	}
+
+
+	/** Return a DOUBLE shortest path from start node S to end node X using
+	    Dijkstra's Algorithm. **/
+	// public double dijkstraShortestPath(String s, String x) {
+
+
+	// }
 
 
 
@@ -156,7 +248,6 @@ public class DirectedGraph {
 	// 	}
 
 	// 	List<String> dfsTree = ArrayList<String>();
-
 
 
 

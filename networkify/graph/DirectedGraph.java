@@ -160,15 +160,7 @@ public class DirectedGraph {
 
 
 	// Various Algorithms.
-
-
-	// Topological Sort.
-
-
-
-	// Dijkstra's.
-
-
+	
 
 	/** Run Dijkstra's Algorithm on this weighted directed graph from the root node S. 
 
@@ -332,7 +324,10 @@ public class DirectedGraph {
 		}
 		return true;
 	}
-	
+
+
+	// Kahn's.
+
 
 	/** Given a vertex S, return True if there is a cycle from and to S. Otherwise,
 	    return False.
@@ -371,6 +366,11 @@ public class DirectedGraph {
 		return false;
 
 	}
+
+
+	// Tarjan's.
+
+
 
 
 

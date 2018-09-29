@@ -40,7 +40,7 @@ public class TestDG {
 
 		// System.out.println("---");
 
-		DirectedGraph g = new DirectedGraph("A");
+		DirectedGraph g = new DirectedGraph();
 
 		// g.addVertex("v2");
 		// g.addVertex("v3");
@@ -78,6 +78,8 @@ public class TestDG {
 		// System.out.println("v8:" + g.vertexHasCycle("v8", "v8", new HashSet<String>()));
 		// System.out.println("v9:" + g.vertexHasCycle("v9", "v9", new HashSet<String>()));
 
+		g.addVertex("S");
+		g.addVertex("A");
 		g.addVertex("B");
 		g.addVertex("C");
 		g.addVertex("D");
@@ -85,8 +87,6 @@ public class TestDG {
 		g.addVertex("F");
 		g.addVertex("G");
 		g.addVertex("H");
-		g.addVertex("I");
-		g.addVertex("J");
 
 		g.addEdge("A", "B", (double) 3);
 		g.addEdge("A", "C", (double) 4);
@@ -102,13 +102,9 @@ public class TestDG {
 		g.addEdge("G", "H", (double) 2);
 		g.addEdge("F", "H", (double) 8);
 		g.addEdge("E", "H", (double) 4);
-		g.addEdge("H", "A", (double) 1);
-		g.addEdge("A", "I", (double) -3);
-		g.addEdge("I", "J", (double) -3);
-		g.addEdge("J", "A", (double) -3);
+		g.addEdge("H", "A", (double) 4);
 
-
-		System.out.println(g.bellmanFord("A"));
+		System.out.println(g.isDAG());
 		// System.out.println(g.shortestPath("A", "A"));
 		// System.out.println(g.shortestPath("A", "B"));
 		// System.out.println(g.shortestPath("A", "C"));
@@ -118,8 +114,6 @@ public class TestDG {
 		// System.out.println(g.shortestPath("A", "G"));
 		// System.out.println(g.shortestPath("A", "H"));
 
-		// System.out.println(g.vertexHasCycle("A", "A", new HashSet<String>()));
-		// System.out.println(g.vertexHasCycle("B", "B", new HashSet<String>()));
 		// System.out.println(g.vertexHasCycle("C", "C", new HashSet<String>()));
 		// System.out.println(g.vertexHasCycle("D", "D", new HashSet<String>()));
 		// System.out.println(g.vertexHasCycle("E", "E", new HashSet<String>()));

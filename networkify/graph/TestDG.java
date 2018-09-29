@@ -102,24 +102,24 @@ public class TestDG {
 		g.addEdge("E", "H", (double) 4);
 		g.addEdge("H", "A", (double) 1);
 
-		// System.out.println(g.dijkstra("A").get("H"));
-		System.out.println(g.shortestPath("A", "A"));
-		System.out.println(g.shortestPath("A", "B"));
-		System.out.println(g.shortestPath("A", "C"));
-		System.out.println(g.shortestPath("A", "D"));
-		System.out.println(g.shortestPath("A", "E"));
-		System.out.println(g.shortestPath("A", "F"));
-		System.out.println(g.shortestPath("A", "G"));
-		System.out.println(g.shortestPath("A", "H"));
+		System.out.println(g.dijkstra("A"));
+		// System.out.println(g.shortestPath("A", "A"));
+		// System.out.println(g.shortestPath("A", "B"));
+		// System.out.println(g.shortestPath("A", "C"));
+		// System.out.println(g.shortestPath("A", "D"));
+		// System.out.println(g.shortestPath("A", "E"));
+		// System.out.println(g.shortestPath("A", "F"));
+		// System.out.println(g.shortestPath("A", "G"));
+		// System.out.println(g.shortestPath("A", "H"));
 
-		System.out.println(g.vertexHasCycle("A", "A", new HashSet<String>()));
-		System.out.println(g.vertexHasCycle("B", "B", new HashSet<String>()));
-		System.out.println(g.vertexHasCycle("C", "C", new HashSet<String>()));
-		System.out.println(g.vertexHasCycle("D", "D", new HashSet<String>()));
-		System.out.println(g.vertexHasCycle("E", "E", new HashSet<String>()));
-		System.out.println(g.vertexHasCycle("F", "F", new HashSet<String>()));
-		System.out.println(g.vertexHasCycle("G", "G", new HashSet<String>()));
-		System.out.println(g.vertexHasCycle("H", "H", new HashSet<String>()));
+		// System.out.println(g.vertexHasCycle("A", "A", new HashSet<String>()));
+		// System.out.println(g.vertexHasCycle("B", "B", new HashSet<String>()));
+		// System.out.println(g.vertexHasCycle("C", "C", new HashSet<String>()));
+		// System.out.println(g.vertexHasCycle("D", "D", new HashSet<String>()));
+		// System.out.println(g.vertexHasCycle("E", "E", new HashSet<String>()));
+		// System.out.println(g.vertexHasCycle("F", "F", new HashSet<String>()));
+		// System.out.println(g.vertexHasCycle("G", "G", new HashSet<String>()));
+		// System.out.println(g.vertexHasCycle("H", "H", new HashSet<String>()));
 
 
 

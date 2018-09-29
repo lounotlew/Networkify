@@ -250,8 +250,48 @@ public class DirectedGraph {
 	}
 
 
-
 	// BF.
+	public LinkedHashMap bellmanFord(String s) {
+		if (!this.adjacencyList.keySet().contains(s)) {
+			throw new IllegalArgumentException(s + " is not a vertex of this graph.");
+		}
+
+		// Distance and predecessors.
+		LinkedHashMap<String, Double> dist = new LinkedHashMap<>();
+		LinkedHashMap<String, String> prev = new LinkedHashMap<>();
+		Set<String> vertices = this.adjacencyList.keySet();
+
+		for (String v : vertices) {
+			dist.put(v, Double.POSITIVE_INFINITY);
+			prev.put(v, null);
+		}
+
+		dist.put(s, (double) 0);
+
+		// Relax edges repeatedly.
+		for (int i=1; i < vertices.size(); i++) {
+			for (String u : vertices) {
+				for (String v : this.adjacencyList.get(u).keySet()) {
+					double weight = this.adjacencyList.get(u).get(v);
+					if (dist.get(u) + weight < dist.get(v)) {
+						dist.put(v, dist.get(u) + weight);
+						prev.put(v, u);
+					}
+				}
+			}
+		}
+
+		for (String u : vertices) {
+			for (String v : this.adjacencyList.get(u).keySet()) {
+				double weight = this.adjacencyList.get(u).get(v);
+				if (dist.get(u) + weight < dist.get(v)) {
+					throw new IllegalArgumentException("This graph contains negative cycles.");
+				}
+			}
+		}
+
+		return dist;
+	}
 
 
 

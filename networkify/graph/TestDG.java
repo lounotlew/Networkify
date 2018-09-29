@@ -85,6 +85,8 @@ public class TestDG {
 		g.addVertex("F");
 		g.addVertex("G");
 		g.addVertex("H");
+		g.addVertex("I");
+		g.addVertex("J");
 
 		g.addEdge("A", "B", (double) 3);
 		g.addEdge("A", "C", (double) 4);
@@ -101,8 +103,12 @@ public class TestDG {
 		g.addEdge("F", "H", (double) 8);
 		g.addEdge("E", "H", (double) 4);
 		g.addEdge("H", "A", (double) 1);
+		g.addEdge("A", "I", (double) -3);
+		g.addEdge("I", "J", (double) -3);
+		g.addEdge("J", "A", (double) -3);
 
-		System.out.println(g.dijkstra("A"));
+
+		System.out.println(g.bellmanFord("A"));
 		// System.out.println(g.shortestPath("A", "A"));
 		// System.out.println(g.shortestPath("A", "B"));
 		// System.out.println(g.shortestPath("A", "C"));

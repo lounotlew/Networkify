@@ -21,6 +21,7 @@ import java.util.*;
 // Class of a weighted undirected graph using adjacency list representation through HashMaps.
 public class DirectedGraph {
 
+	/** Implementation of a Map Entry used in Dijkstra's Algorithm. **/
 	final class MyEntry<K, V> implements Map.Entry<K, V> {
     	private final K key;
     	private V value;

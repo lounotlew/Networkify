@@ -3,8 +3,13 @@
 
 ### Description
 
-PH
+Networkify is a Java-based Mac & Windows desktop application that utilizes graph theory to represent any desired network or system as a directed or undirected weighted graph. No knowledge of graph theory is needed to fully utilize Networkify.
 
+A common application of graph theory (and hence a use case for Networkify) is to build a neighborhood or a city's street networks as a directed graph (whose weights would be the average time it takes to travel a road or street on average speed), and finding the shortest delivery path from a restaurant/vendor to a customer. Another application is to build a recommendation system for a major path for college students.
+
+This application utilizes Swing for its GUI, and the interactive graph drawer is currently being improved on. It is highly recommended you use the interactive graph drawer for demonstration purposes, as the output cannot be saved, and any bigger graph should be constructed using the V2V (Vertex-to-Vertex) Connector.
+
+Networkify is available for download on [placeholder link]().
 
 Currently Implemented Algorithms:
 
@@ -18,9 +23,7 @@ _Directed Graphs:_
 
 4) Modified Kahn's Algorithm to Check if Graph is a DAG.
 
-5) DFS Cycle Detection.
-
-6) Tarjan's Algorithm for Finding Strongly Connected Components.
+5) Tarjan's Algorithm for Finding Strongly Connected Components.
 
 _Undirected Graphs:_
 
@@ -32,18 +35,22 @@ _Undirected Graphs:_
 
 4) Kruskal' Algorithm for MST.
 
-5) Union-Find Algorithm for Cycle Detection.
+To be implemented:
 
-### Installation
+1) Cycle detection through DFS in Directed Graphs.
 
-PH
+2)  Union-Find Algorithm for Cycle Detection in Undirected Graphs.
 
-Required packages:
+### Packages & Libraries Used in Networkify
 
-PH
+Netwokify only utilizes the standard Java library (``utils`` ans ``Swing``) found in JDK 11.
 
 ### References
 
 References to the libraries and packages used in Networkify:
 
-PH
+1) Java Utils Data Structures: https://www.java-examples.com/java-collections-and-data-structures-java-util-package
+
+2) Swing: https://docs.oracle.com/javase/tutorial/uiswing/
+
+

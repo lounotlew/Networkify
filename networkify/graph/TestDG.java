@@ -78,7 +78,6 @@ public class TestDG {
 		// System.out.println("v8:" + g.vertexHasCycle("v8", "v8", new HashSet<String>()));
 		// System.out.println("v9:" + g.vertexHasCycle("v9", "v9", new HashSet<String>()));
 
-		g.addVertex("S");
 		g.addVertex("A");
 		g.addVertex("B");
 		g.addVertex("C");
@@ -102,9 +101,9 @@ public class TestDG {
 		g.addEdge("G", "H", (double) 2);
 		g.addEdge("F", "H", (double) 8);
 		g.addEdge("E", "H", (double) 4);
-		g.addEdge("H", "A", (double) 4);
+		// g.addEdge("H", "A", (double) 4);
 
-		System.out.println(g.isDAG());
+		System.out.println(g.topologicalSort());
 		// System.out.println(g.shortestPath("A", "A"));
 		// System.out.println(g.shortestPath("A", "B"));
 		// System.out.println(g.shortestPath("A", "C"));

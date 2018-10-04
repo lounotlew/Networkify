@@ -316,17 +316,85 @@ public class DirectedGraph {
 	    Method: Run DFS on each node to see if there is a cycle.
 
 	    Implement Kahn's Algorithm for greater efficiency. **/
-	public boolean isDAG() {
-		for (String v : this.adjacencyList.keySet()) {
-			if (vertexHasCycle(v)) {
-				return false;
-			}
-		}
-		return true;
-	}
+
 
 
 	// Kahn's.
+
+	/** Kahn's Algorithm for Topological Sort. **/
+	public List<String> topologicalSort() {
+		// 
+		Stack<String> noInwardEdgeVertices = new Stack<>();
+		List<String> sortedElems = new ArrayList<>();
+		LinkedHashMap<String, Integer> inwardEdgesCopy = new LinkedHashMap<>(this.inwardEdges);
+
+		for (String vertex : inwardEdgesCopy.keySet()) {
+			if (this.inwardEdges.get(vertex) == 0) {
+				noInwardEdgeVertices.add(vertex);
+			}
+		}
+
+		while (!noInwardEdgeVertices.isEmpty()) {
+			String u = noInwardEdgeVertices.pop();
+
+			sortedElems.add(u);
+
+			for (String v : this.adjacencyList.get(u).keySet()) {
+				int degree = inwardEdgesCopy.get(v);
+				inwardEdgesCopy.put(v, degree-1);
+
+				if (inwardEdgesCopy.get(v) == 0) {
+					noInwardEdgeVertices.add(v);
+				}
+			}
+		}
+
+		for (String vertex : inwardEdgesCopy.keySet()) {
+			if (inwardEdgesCopy.get(vertex) != 0) {
+				return null;
+			}
+		}
+
+		return sortedElems;
+	}
+
+
+	/** Modified Kahn's Algorithm for cycle detection. **/
+	public boolean isDAG() {
+		// 
+		Stack<String> noInwardEdgeVertices = new Stack<>();
+		List<String> sortedElems = new ArrayList<>();
+		LinkedHashMap<String, Integer> inwardEdgesCopy = new LinkedHashMap<>(this.inwardEdges);
+
+		for (String vertex : inwardEdgesCopy.keySet()) {
+			if (this.inwardEdges.get(vertex) == 0) {
+				noInwardEdgeVertices.add(vertex);
+			}
+		}
+
+		while (!noInwardEdgeVertices.isEmpty()) {
+			String u = noInwardEdgeVertices.pop();
+
+			sortedElems.add(u);
+
+			for (String v : this.adjacencyList.get(u).keySet()) {
+				int degree = inwardEdgesCopy.get(v);
+				inwardEdgesCopy.put(v, degree-1);
+
+				if (inwardEdgesCopy.get(v) == 0) {
+					noInwardEdgeVertices.add(v);
+				}
+			}
+		}
+
+		for (String vertex : inwardEdgesCopy.keySet()) {
+			if (inwardEdgesCopy.get(vertex) != 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 
 	/** Given a vertex S, return True if there is a cycle from and to S. Otherwise,

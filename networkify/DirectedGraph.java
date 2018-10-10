@@ -60,6 +60,7 @@ public class DirectedGraph {
 	LinkedHashMap<String, LinkedHashMap<String, Double>> adjacencyList;
 	LinkedHashMap<String, Integer> inwardEdges;
 	String id;
+	Boolean isSimple;
 
 
 
@@ -70,6 +71,7 @@ public class DirectedGraph {
 		this.inwardEdges = new LinkedHashMap<>();
 
 		this.id = "Directed Weighted Graph";
+		this.isSimple = true;
 	}
 
 
@@ -110,6 +112,10 @@ public class DirectedGraph {
 			throw new IllegalArgumentException("This graph does not contain the vertex " + u + ".");
 		}
 
+		if (v == u) {
+			this.isSimple = false;
+		}
+
 		int count = this.inwardEdges.get(u);
 
 		this.adjacencyList.get(v).put(u, weight);
@@ -123,6 +129,10 @@ public class DirectedGraph {
 			throw new IllegalArgumentException("This graph does not contain the vertex " + v + ".");
 		} else if (!this.adjacencyList.containsKey(u)) {
 			throw new IllegalArgumentException("This graph does not contain the vertex " + u + ".");
+		}
+
+		if (v == u) {
+			this.isSimple = true;
 		}
 
 		int count = this.inwardEdges.get(u);
@@ -146,20 +156,29 @@ public class DirectedGraph {
 
 	/** Print the current graph in the following format:
 
-	    VERTEX: {Set of Edges in the format CONNECTED_VERTEX: WEIGHT}. **/
+	    VERTEX: {Set of edges in the format CONNECTED_VERTEX: WEIGHT}. **/
 	public void printGraph() {
 		for (String vertex : this.adjacencyList.keySet()) {
 			System.out.println(vertex + ": " + this.adjacencyList.get(vertex));
 		}
 	}
 
-	/** **/
+	/** Print the inward edge numbers for each vertex in this directed graph. **/
 	public void printInwardEdges() {
 		System.out.println(this.inwardEdges);
 	}
 
 
-	// Various Algorithms.
+	/** Return true if this directed graph is a simple graph. Otherwise, return false. **/
+	public boolean isSimple() {
+		return this.isSimple;
+	}
+
+
+	/* Various Algorithms. */
+
+
+	// Shortest paths.
 	
 
 	/** Run Dijkstra's Algorithm on this weighted directed graph from the root node S. 
@@ -263,7 +282,7 @@ public class DirectedGraph {
 	}
 
 
-	// BF.
+	/** **/
 	public LinkedHashMap bellmanFord(String s) {
 		if (!this.adjacencyList.keySet().contains(s)) {
 			throw new IllegalArgumentException(s + " is not a vertex of this graph.");
@@ -307,94 +326,7 @@ public class DirectedGraph {
 	}
 
 
-
 	// Cycle detection.
-
-
-	/** Return True if this directed graph is a DAG. Otherwise, return False.
-
-	    Method: Run DFS on each node to see if there is a cycle.
-
-	    Implement Kahn's Algorithm for greater efficiency. **/
-
-
-
-	// Kahn's.
-
-	/** Kahn's Algorithm for Topological Sort. **/
-	public List<String> topologicalSort() {
-		// 
-		Stack<String> noInwardEdgeVertices = new Stack<>();
-		List<String> sortedElems = new ArrayList<>();
-		LinkedHashMap<String, Integer> inwardEdgesCopy = new LinkedHashMap<>(this.inwardEdges);
-
-		for (String vertex : inwardEdgesCopy.keySet()) {
-			if (this.inwardEdges.get(vertex) == 0) {
-				noInwardEdgeVertices.add(vertex);
-			}
-		}
-
-		while (!noInwardEdgeVertices.isEmpty()) {
-			String u = noInwardEdgeVertices.pop();
-
-			sortedElems.add(u);
-
-			for (String v : this.adjacencyList.get(u).keySet()) {
-				int degree = inwardEdgesCopy.get(v);
-				inwardEdgesCopy.put(v, degree-1);
-
-				if (inwardEdgesCopy.get(v) == 0) {
-					noInwardEdgeVertices.add(v);
-				}
-			}
-		}
-
-		for (String vertex : inwardEdgesCopy.keySet()) {
-			if (inwardEdgesCopy.get(vertex) != 0) {
-				return null;
-			}
-		}
-
-		return sortedElems;
-	}
-
-
-	/** Modified Kahn's Algorithm for cycle detection. **/
-	public boolean isDAG() {
-		// 
-		Stack<String> noInwardEdgeVertices = new Stack<>();
-		List<String> sortedElems = new ArrayList<>();
-		LinkedHashMap<String, Integer> inwardEdgesCopy = new LinkedHashMap<>(this.inwardEdges);
-
-		for (String vertex : inwardEdgesCopy.keySet()) {
-			if (this.inwardEdges.get(vertex) == 0) {
-				noInwardEdgeVertices.add(vertex);
-			}
-		}
-
-		while (!noInwardEdgeVertices.isEmpty()) {
-			String u = noInwardEdgeVertices.pop();
-
-			sortedElems.add(u);
-
-			for (String v : this.adjacencyList.get(u).keySet()) {
-				int degree = inwardEdgesCopy.get(v);
-				inwardEdgesCopy.put(v, degree-1);
-
-				if (inwardEdgesCopy.get(v) == 0) {
-					noInwardEdgeVertices.add(v);
-				}
-			}
-		}
-
-		for (String vertex : inwardEdgesCopy.keySet()) {
-			if (inwardEdgesCopy.get(vertex) != 0) {
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 
 	/** Given a vertex S, return True if there is a cycle from and to S. Otherwise,
@@ -436,27 +368,88 @@ public class DirectedGraph {
 	}
 
 
-	// Tarjan's.
+	/** Kahn's Algorithm for Topological Sort. **/
+	public List<String> topologicalSort() {
+		// 
+		Stack<String> noInwardEdgeVertices = new Stack<>();
+		List<String> sortedElems = new ArrayList<>();
+		LinkedHashMap<String, Integer> inwardEdgesCopy = new LinkedHashMap<>(this.inwardEdges);
+
+		for (String vertex : inwardEdgesCopy.keySet()) {
+			if (this.inwardEdges.get(vertex) == 0) {
+				noInwardEdgeVertices.add(vertex);
+			}
+		}
+
+		while (!noInwardEdgeVertices.isEmpty()) {
+			String u = noInwardEdgeVertices.pop();
+
+			sortedElems.add(u);
+
+			for (String v : this.adjacencyList.get(u).keySet()) {
+				int degree = inwardEdgesCopy.get(v);
+				inwardEdgesCopy.remove(v);
+				inwardEdgesCopy.put(v, degree-1);
+
+				if (inwardEdgesCopy.get(v) == 0) {
+					noInwardEdgeVertices.add(v);
+				}
+			}
+		}
+
+		for (String vertex : inwardEdgesCopy.keySet()) {
+			if (inwardEdgesCopy.get(vertex) != 0) {
+				return null;
+			}
+		}
+
+		return sortedElems;
+	}
 
 
+	/** Modified Kahn's Algorithm for cycle detection. **/
+	public boolean isDAG() {
+		// 
+		Stack<String> noInwardEdgeVertices = new Stack<>();
+		List<String> sortedElems = new ArrayList<>();
+		LinkedHashMap<String, Integer> inwardEdgesCopy = new LinkedHashMap<>(this.inwardEdges);
+
+		for (String vertex : inwardEdgesCopy.keySet()) {
+			if (this.inwardEdges.get(vertex) == 0) {
+				noInwardEdgeVertices.add(vertex);
+			}
+		}
+
+		while (!noInwardEdgeVertices.isEmpty()) {
+			String u = noInwardEdgeVertices.pop();
+
+			sortedElems.add(u);
+
+			for (String v : this.adjacencyList.get(u).keySet()) {
+				int degree = inwardEdgesCopy.get(v);
+				inwardEdgesCopy.remove(v);
+				inwardEdgesCopy.put(v, degree-1);
+
+				if (inwardEdgesCopy.get(v) == 0) {
+					noInwardEdgeVertices.add(v);
+				}
+			}
+		}
+
+		for (String vertex : inwardEdgesCopy.keySet()) {
+			if (inwardEdgesCopy.get(vertex) != 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 
+	// Strongly connected components.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	/** Tarjan's **/
 
 
 

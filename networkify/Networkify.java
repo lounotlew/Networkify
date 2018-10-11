@@ -47,7 +47,19 @@ public class Networkify extends JFrame {
 
 
 		/** Adding vertices. **/
-		
+
+		// Current graph label.
+		JLabel addVertexLabel = new JLabel("Add vertices to this graph.");
+		addVertexLabel.setBounds(17, 70, 500, 35);
+		mainPanel.add(addVertexLabel);
+
+		JTextField vertexNameField = new JTextField("Vertex Name");
+		vertexNameField.setBounds(10, 100, 90, 35);
+		mainPanel.add(vertexNameField);
+
+		JButton addVertexButton = new JButton("Add Vertex");
+		addVertexButton.setBounds(100, 100, 90, 35);
+		mainPanel.add(addVertexButton);
 
 
 		// JTextField vertexNameField = new JTextField("Text 1", 10);
@@ -94,6 +106,34 @@ public class Networkify extends JFrame {
         		currGraphLabel.setText("Undirected Graph: " + graphName);
         	}
 
+        });
+
+        // Adding a node to this graph.
+        addVertexButton.addActionListener((ActionEvent event) -> {
+        	JFrame frame1 = new JFrame("Add Vertex");
+
+        	if (this.graphType == null) {
+        		JOptionPane.showMessageDialog(frame1, "Please load or create a graph first.");
+        	}
+
+        	else {
+        		if (this.graphType == "DG") {
+        			try {
+        				this.currDG.addVertex(vertexNameField.getText());
+        				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currDG.name + ".");
+        			} catch (IllegalArgumentException i) {
+        				JOptionPane.showMessageDialog(frame1, this.currDG.name + " already has that vertex.");
+        			}
+        		}
+        		else {
+        			try {
+        				this.currUG.addVertex(vertexNameField.getText());
+        				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currUG.name + ".");
+        			} catch (IllegalArgumentException i) {
+        				JOptionPane.showMessageDialog(frame1, this.currDG.name + " already has that vertex.");
+        			}
+        		}
+        	}
         });
 
 

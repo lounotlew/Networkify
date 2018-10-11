@@ -44,11 +44,12 @@ public class UndirectedGraph {
 		clarity and better UX. **/
 	LinkedHashMap<String, LinkedHashMap<String, Double>> adjacencyList;
 	String id;
+	String name;
 
 
-	public UndirectedGraph(String root) {
+	public UndirectedGraph(String name) {
 		this.adjacencyList = new LinkedHashMap<>();
-		this.adjacencyList.put(root, new LinkedHashMap<String, Double>());
+		this.name = name;
 		this.id = "Undirected Weighted Graph";
 	}
 

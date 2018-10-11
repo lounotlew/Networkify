@@ -60,15 +60,17 @@ public class DirectedGraph {
 	LinkedHashMap<String, LinkedHashMap<String, Double>> adjacencyList;
 	LinkedHashMap<String, Integer> inwardEdges;
 	String id;
+	String name;
 	Boolean isSimple;
 
 
 
 
 
-	public DirectedGraph() {
+	public DirectedGraph(String name) {
 		this.adjacencyList = new LinkedHashMap<>();
 		this.inwardEdges = new LinkedHashMap<>();
+		this.name = name;
 
 		this.id = "Directed Weighted Graph";
 		this.isSimple = true;

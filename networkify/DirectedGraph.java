@@ -170,6 +170,11 @@ public class DirectedGraph {
 		System.out.println(this.inwardEdges);
 	}
 
+	/** Return a set of all vertices of this graph. **/
+	public Set getAllVertices() {
+		return this.adjacencyList.keySet();
+	}
+
 
 	/** Return true if this directed graph is a simple graph. Otherwise, return false. **/
 	public boolean isSimple() {

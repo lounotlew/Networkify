@@ -2,6 +2,7 @@
 
 // Written by Lewis Kim.
 
+import java.util.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
@@ -46,7 +47,9 @@ public class Networkify extends JFrame {
 		mainPanel.add(createGraphButton);
 
 
-		/** Adding vertices. **/
+		/** Adding and removing vertices. **/
+
+		DefaultComboBoxModel<String> vertexModel = new DefaultComboBoxModel<String>(new String[0]);
 
 		// Current graph label.
 		JLabel addVertexLabel = new JLabel("Add vertices to this graph.");
@@ -54,12 +57,37 @@ public class Networkify extends JFrame {
 		mainPanel.add(addVertexLabel);
 
 		JTextField vertexNameField = new JTextField("Vertex Name");
-		vertexNameField.setBounds(10, 100, 90, 35);
+		vertexNameField.setBounds(10, 100, 100, 35);
 		mainPanel.add(vertexNameField);
 
 		JButton addVertexButton = new JButton("Add Vertex");
-		addVertexButton.setBounds(100, 100, 90, 35);
+		addVertexButton.setBounds(110, 100, 90, 35);
 		mainPanel.add(addVertexButton);
+
+		JLabel removeVertexLabel = new JLabel("Remove vertices from this graph.");
+		removeVertexLabel.setBounds(220, 70, 500, 35);
+		mainPanel.add(removeVertexLabel);
+
+		JComboBox removeVertexList = new JComboBox(vertexModel);
+		removeVertexList.setBounds(220, 100, 125, 35);
+		mainPanel.add(removeVertexList);
+
+		JButton removeVertexButton = new JButton("Remove Vertex");
+		removeVertexButton.setBounds(350, 100, 125, 35);
+		mainPanel.add(removeVertexButton);
+
+
+		/** Adding Edges. **/
+		JLabel addEdgeLabel = new JLabel("Connect two vertices in this graph.");
+		addEdgeLabel.setBounds(17, 140, 500, 35);
+		mainPanel.add(addEdgeLabel);
+
+		JComboBox vertexList1 = new JComboBox(vertexModel);
+		JComboBox vertexList2 = new JComboBox(vertexModel);
+		vertexList1.setBounds(10, 160, 125, 35);
+		vertexList2.setBounds(150, 160, 125, 35);
+		mainPanel.add(vertexList1);
+		mainPanel.add(vertexList2);
 
 
 		// JTextField vertexNameField = new JTextField("Text 1", 10);
@@ -120,6 +148,7 @@ public class Networkify extends JFrame {
         		if (this.graphType == "DG") {
         			try {
         				this.currDG.addVertex(vertexNameField.getText());
+        				vertexModel.addElement(vertexNameField.getText());
         				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currDG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currDG.name + " already has that vertex.");
@@ -128,6 +157,7 @@ public class Networkify extends JFrame {
         		else {
         			try {
         				this.currUG.addVertex(vertexNameField.getText());
+        				vertexModel.addElement(vertexNameField.getText());
         				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currUG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currDG.name + " already has that vertex.");
@@ -135,6 +165,46 @@ public class Networkify extends JFrame {
         		}
         	}
         });
+
+
+        // Adding a node to this graph.
+        removeVertexButton.addActionListener((ActionEvent event) -> {
+        	JFrame frame1 = new JFrame("Remove Vertex");
+
+        	if (this.graphType == null) {
+        		JOptionPane.showMessageDialog(frame1, "Please load or create a graph first.");
+        	}
+
+        	else {
+        		if (this.graphType == "DG") {
+        			try {
+        				String name = (String)vertexModel.getSelectedItem();
+        				this.currDG.removeVertex(name);
+        				vertexModel.removeElement(name);
+        				JOptionPane.showMessageDialog(frame1, "Successfully removed " + name + " to " + this.currDG.name + ".");
+        			} catch (IllegalArgumentException i) {
+        				JOptionPane.showMessageDialog(frame1, this.currDG.name + " does not have that vertex.");
+        			}
+        		}
+        		else {
+        			try {
+        				String name = (String)vertexModel.getSelectedItem();
+        				this.currDG.removeVertex(name);
+        				vertexModel.removeElement(name);
+        				JOptionPane.showMessageDialog(frame1, "Successfully removed " + name + " to " + this.currUG.name + ".");
+        				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currUG.name + ".");
+        			} catch (IllegalArgumentException i) {
+        				JOptionPane.showMessageDialog(frame1, this.currDG.name + " does not have that vertex.");
+        			}
+        		}
+        	}
+        });
+
+
+
+        // addEdgeButton.addActionListener((ActionEvent event) -> {
+
+        // });
 
 
 
@@ -147,9 +217,30 @@ public class Networkify extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
-	public void setGraphNameLabel(String name) {
+	public String[] getVertexList() {
+		String[] noGraph = {"Load or create a graph first."};
+		String[] noVertices = {"Please add vertices to your graph first."};
 
-
+		if (this.graphType == null) {
+			return noGraph;
+		}
+		else if (this.graphType == "DG") {
+			if (this.currDG.getAllVertices().size() == 0) {
+				return noVertices;
+			} else {
+				Set<String> vertexSet = this.currDG.getAllVertices();
+				String[] vertices = vertexSet.toArray(new String[vertexSet.size()]);
+				return vertices;
+			}
+		} else {
+			if (this.currUG.getAllVertices().size() == 0) {
+				return noVertices;
+			} else {
+				Set<String> vertexSet = this.currUG.getAllVertices();
+				String[] vertices = vertexSet.toArray(new String[vertexSet.size()]);
+				return vertices;
+			}
+		}
 	}
 
 

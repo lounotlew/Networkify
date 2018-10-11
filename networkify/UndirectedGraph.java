@@ -118,6 +118,12 @@ public class UndirectedGraph {
 	}
 
 
+	/** Return a set of all vertices of this graph. **/
+	public Set getAllVertices() {
+		return this.adjacencyList.keySet();
+	}
+
+
 	/** Print the current graph in the following format:
 
 	    VERTEX: {Set of Edges in the format CONNECTED_VERTEX: WEIGHT}. **/

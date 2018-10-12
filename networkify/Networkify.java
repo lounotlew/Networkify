@@ -53,6 +53,9 @@ public class Networkify extends JFrame {
 		DefaultComboBoxModel<String> removeVertexModel = new DefaultComboBoxModel<String>(new String[0]);
 		DefaultComboBoxModel<String> addEdgeVertexModel1 = new DefaultComboBoxModel<String>(new String[0]);
 		DefaultComboBoxModel<String> addEdgeVertexModel2 = new DefaultComboBoxModel<String>(new String[0]);
+		DefaultComboBoxModel<String> removeEdgeVertexModel1 = new DefaultComboBoxModel<String>(new String[0]);
+		DefaultComboBoxModel<String> removeEdgeVertexModel2 = new DefaultComboBoxModel<String>(new String[0]);
+
 
 		JLabel addVertexLabel = new JLabel("Add vertices to this graph.");
 		addVertexLabel.setBounds(17, 70, 500, 35);
@@ -84,12 +87,12 @@ public class Networkify extends JFrame {
 		addEdgeLabel.setBounds(17, 140, 500, 35);
 		mainPanel.add(addEdgeLabel);
 
-		JComboBox vertexList1 = new JComboBox(addEdgeVertexModel1);
-		JComboBox vertexList2 = new JComboBox(addEdgeVertexModel2);
-		vertexList1.setBounds(10, 160, 125, 35);
-		vertexList2.setBounds(150, 160, 125, 35);
-		mainPanel.add(vertexList1);
-		mainPanel.add(vertexList2);
+		JComboBox addEdgeVertexList1 = new JComboBox(addEdgeVertexModel1);
+		JComboBox addEdgeVertexList2 = new JComboBox(addEdgeVertexModel2);
+		addEdgeVertexList1.setBounds(10, 160, 125, 35);
+		addEdgeVertexList2.setBounds(150, 160, 125, 35);
+		mainPanel.add(addEdgeVertexList1);
+		mainPanel.add(addEdgeVertexList2);
 
 		JTextField weightField = new JTextField();
 		weightField.setBounds(10, 190, 125, 35);
@@ -100,6 +103,23 @@ public class Networkify extends JFrame {
 		mainPanel.add(addEdgeButton);
 
 
+		/** Removing Edges. **/
+		JLabel removeEdgeLabel = new JLabel("Remove an edge from this graph.");
+		removeEdgeLabel.setBounds(17, 220, 500, 35);
+		mainPanel.add(removeEdgeLabel);
+
+		JComboBox removeEdgeVertexList1 = new JComboBox(removeEdgeVertexModel1);
+		JComboBox removeEdgeVertexList2 = new JComboBox(removeEdgeVertexModel2);
+		removeEdgeVertexList1.setBounds(10, 250, 125, 35);
+		removeEdgeVertexList2.setBounds(150, 250, 125, 35);
+		mainPanel.add(removeEdgeVertexList1);
+		mainPanel.add(removeEdgeVertexList2);
+
+		JButton removeEdgeButton = new JButton("Remove Edge");
+		removeEdgeButton.setBounds(10, 290, 125, 35);
+		mainPanel.add(removeEdgeButton);
+
+
 		// JTextField vertexNameField = new JTextField("Text 1", 10);
 		// vertexNameField.setBounds(35, 100, 120, 35);
 		// mainPanel.add(vertexNameField);
@@ -107,17 +127,17 @@ public class Networkify extends JFrame {
 
 		// Loading a serialized graph.
         loadGraphButton.addActionListener((ActionEvent event) -> {
-        	// if (this.graphType == null) {
-        	// 	return;
-        	// } else {
-        	// 	if (this.graphType == "DG") {
-        	// 		this.currDG.printGraph();
-        	// 	}
-        	// 	else {
-        	// 		this.currUG.printGraph();
-        	// 	}
-        	// }
-        	analysisUI();
+        	if (this.graphType == null) {
+        		return;
+        	} else {
+        		if (this.graphType == "DG") {
+        			this.currDG.printGraph();
+        		}
+        		else {
+        			this.currUG.printGraph();
+        		}
+        	}
+        	// analysisUI();
         });
 
 
@@ -171,6 +191,8 @@ public class Networkify extends JFrame {
         				removeVertexModel.addElement(vertexNameField.getText());
         				addEdgeVertexModel1.addElement(vertexNameField.getText());
         				addEdgeVertexModel2.addElement(vertexNameField.getText());
+        				removeEdgeVertexModel1.addElement(vertexNameField.getText());
+        				removeEdgeVertexModel2.addElement(vertexNameField.getText());
         				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currDG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currDG.name + " already has that vertex.");
@@ -182,6 +204,8 @@ public class Networkify extends JFrame {
         				removeVertexModel.addElement(vertexNameField.getText());
         				addEdgeVertexModel1.addElement(vertexNameField.getText());
         				addEdgeVertexModel2.addElement(vertexNameField.getText());
+        				removeEdgeVertexModel1.addElement(vertexNameField.getText());
+        				removeEdgeVertexModel2.addElement(vertexNameField.getText());
         				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currUG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currDG.name + " already has that vertex.");
@@ -207,6 +231,8 @@ public class Networkify extends JFrame {
         				removeVertexModel.removeElement(name);
         				addEdgeVertexModel1.removeElement(name);
         				addEdgeVertexModel2.removeElement(name);
+        				removeEdgeVertexModel1.removeElement(name);
+        				removeEdgeVertexModel2.removeElement(name);
         				JOptionPane.showMessageDialog(frame1, "Successfully removed " + name + " to " + this.currDG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currDG.name + " does not have that vertex.");
@@ -219,6 +245,8 @@ public class Networkify extends JFrame {
         				removeVertexModel.removeElement(name);
         				addEdgeVertexModel1.removeElement(name);
         				addEdgeVertexModel2.removeElement(name);
+        				removeEdgeVertexModel1.removeElement(name);
+        				removeEdgeVertexModel2.removeElement(name);
         				JOptionPane.showMessageDialog(frame1, "Successfully removed " + name + " to " + this.currUG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currUG.name + " does not have that vertex.");
@@ -228,7 +256,7 @@ public class Networkify extends JFrame {
         });
 
 
-
+        // Adding an edge.
         addEdgeButton.addActionListener((ActionEvent event) -> {
         	JFrame frame1 = new JFrame("Add Edge");
         	try {
@@ -277,6 +305,30 @@ public class Networkify extends JFrame {
         	}
         });
 
+
+        // Removing an edge.
+        removeEdgeButton.addActionListener((ActionEvent event) -> {
+        	JFrame frame1 = new JFrame("Remove Edge");
+
+        	if (this.graphType == null) {
+        		JOptionPane.showMessageDialog(frame1, "Please load or create a graph first.");
+        	} else {
+        		String v1 = (String)removeEdgeVertexModel1.getSelectedItem();
+        		String v2 = (String)removeEdgeVertexModel2.getSelectedItem();
+
+        		try {
+        			if (this.graphType == "DG") {
+        				this.currDG.removeEdge(v1, v2);
+        				JOptionPane.showMessageDialog(frame1, "Successfully removed the edge between " + v1 + " and " + v2 + ".");
+        			} else {
+        				this.currUG.removeEdge(v1, v2);
+        				JOptionPane.showMessageDialog(frame1, "Successfully removed the edge between " + v1 + " and " + v2 + ".");
+        			}
+        		} catch (IllegalArgumentException e) {
+        			JOptionPane.showMessageDialog(frame1, "There is no edge between " + v1 + " and " + v2 + ".");
+        		}
+        	}
+        });
 
 
 		setTitle("Welcome to Networkify");

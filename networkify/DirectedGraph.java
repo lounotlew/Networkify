@@ -126,7 +126,7 @@ public class DirectedGraph {
 
 
 	/** Remove an edge between vertex V and U. **/
-	public void removeEdge(String v, String u, Double weight) {
+	public void removeEdge(String v, String u) {
 		if (!this.adjacencyList.containsKey(v)) {
 			throw new IllegalArgumentException("This graph does not contain the vertex " + v + ".");
 		} else if (!this.adjacencyList.containsKey(u)) {
@@ -135,6 +135,10 @@ public class DirectedGraph {
 
 		if (v == u) {
 			this.isSimple = true;
+		}
+
+		if (!this.adjacencyList.get(v).keySet().contains(u)) {
+			throw new IllegalArgumentException("That edge does not exist.");
 		}
 
 		int count = this.inwardEdges.get(u);

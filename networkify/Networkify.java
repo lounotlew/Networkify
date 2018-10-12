@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.JFrame;
+import java.text.DecimalFormat;
 
 
 public class Networkify extends JFrame {
@@ -24,7 +25,7 @@ public class Networkify extends JFrame {
 	private void initUI() {
 
 		// Main JPanel.
-		JPanel mainPanel = new JPanel();
+		JPanel mainPanel = new JPanel(new GridLayout(0, 2));
 		mainPanel.setLayout(null);
 		add(mainPanel);
 
@@ -49,9 +50,10 @@ public class Networkify extends JFrame {
 
 		/** Adding and removing vertices. **/
 
-		DefaultComboBoxModel<String> vertexModel = new DefaultComboBoxModel<String>(new String[0]);
+		DefaultComboBoxModel<String> removeVertexModel = new DefaultComboBoxModel<String>(new String[0]);
+		DefaultComboBoxModel<String> addEdgeVertexModel1 = new DefaultComboBoxModel<String>(new String[0]);
+		DefaultComboBoxModel<String> addEdgeVertexModel2 = new DefaultComboBoxModel<String>(new String[0]);
 
-		// Current graph label.
 		JLabel addVertexLabel = new JLabel("Add vertices to this graph.");
 		addVertexLabel.setBounds(17, 70, 500, 35);
 		mainPanel.add(addVertexLabel);
@@ -68,7 +70,7 @@ public class Networkify extends JFrame {
 		removeVertexLabel.setBounds(220, 70, 500, 35);
 		mainPanel.add(removeVertexLabel);
 
-		JComboBox removeVertexList = new JComboBox(vertexModel);
+		JComboBox removeVertexList = new JComboBox(removeVertexModel);
 		removeVertexList.setBounds(220, 100, 125, 35);
 		mainPanel.add(removeVertexList);
 
@@ -82,12 +84,20 @@ public class Networkify extends JFrame {
 		addEdgeLabel.setBounds(17, 140, 500, 35);
 		mainPanel.add(addEdgeLabel);
 
-		JComboBox vertexList1 = new JComboBox(vertexModel);
-		JComboBox vertexList2 = new JComboBox(vertexModel);
+		JComboBox vertexList1 = new JComboBox(addEdgeVertexModel1);
+		JComboBox vertexList2 = new JComboBox(addEdgeVertexModel2);
 		vertexList1.setBounds(10, 160, 125, 35);
 		vertexList2.setBounds(150, 160, 125, 35);
 		mainPanel.add(vertexList1);
 		mainPanel.add(vertexList2);
+
+		JTextField weightField = new JTextField();
+		weightField.setBounds(10, 190, 125, 35);
+		mainPanel.add(weightField);
+
+		JButton addEdgeButton = new JButton("Add Edge");
+		addEdgeButton.setBounds(150, 190, 125, 35);
+		mainPanel.add(addEdgeButton);
 
 
 		// JTextField vertexNameField = new JTextField("Text 1", 10);
@@ -97,7 +107,17 @@ public class Networkify extends JFrame {
 
 		// Loading a serialized graph.
         loadGraphButton.addActionListener((ActionEvent event) -> {
-        	System.out.println("NYI");
+        	// if (this.graphType == null) {
+        	// 	return;
+        	// } else {
+        	// 	if (this.graphType == "DG") {
+        	// 		this.currDG.printGraph();
+        	// 	}
+        	// 	else {
+        	// 		this.currUG.printGraph();
+        	// 	}
+        	// }
+        	analysisUI();
         });
 
 
@@ -148,7 +168,9 @@ public class Networkify extends JFrame {
         		if (this.graphType == "DG") {
         			try {
         				this.currDG.addVertex(vertexNameField.getText());
-        				vertexModel.addElement(vertexNameField.getText());
+        				removeVertexModel.addElement(vertexNameField.getText());
+        				addEdgeVertexModel1.addElement(vertexNameField.getText());
+        				addEdgeVertexModel2.addElement(vertexNameField.getText());
         				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currDG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currDG.name + " already has that vertex.");
@@ -157,7 +179,9 @@ public class Networkify extends JFrame {
         		else {
         			try {
         				this.currUG.addVertex(vertexNameField.getText());
-        				vertexModel.addElement(vertexNameField.getText());
+        				removeVertexModel.addElement(vertexNameField.getText());
+        				addEdgeVertexModel1.addElement(vertexNameField.getText());
+        				addEdgeVertexModel2.addElement(vertexNameField.getText());
         				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currUG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currDG.name + " already has that vertex.");
@@ -178,9 +202,11 @@ public class Networkify extends JFrame {
         	else {
         		if (this.graphType == "DG") {
         			try {
-        				String name = (String)vertexModel.getSelectedItem();
+        				String name = (String)removeVertexModel.getSelectedItem();
         				this.currDG.removeVertex(name);
-        				vertexModel.removeElement(name);
+        				removeVertexModel.removeElement(name);
+        				addEdgeVertexModel1.removeElement(name);
+        				addEdgeVertexModel2.removeElement(name);
         				JOptionPane.showMessageDialog(frame1, "Successfully removed " + name + " to " + this.currDG.name + ".");
         			} catch (IllegalArgumentException i) {
         				JOptionPane.showMessageDialog(frame1, this.currDG.name + " does not have that vertex.");
@@ -188,13 +214,14 @@ public class Networkify extends JFrame {
         		}
         		else {
         			try {
-        				String name = (String)vertexModel.getSelectedItem();
-        				this.currDG.removeVertex(name);
-        				vertexModel.removeElement(name);
+        				String name = (String)removeVertexModel.getSelectedItem();
+        				this.currUG.removeVertex(name);
+        				removeVertexModel.removeElement(name);
+        				addEdgeVertexModel1.removeElement(name);
+        				addEdgeVertexModel2.removeElement(name);
         				JOptionPane.showMessageDialog(frame1, "Successfully removed " + name + " to " + this.currUG.name + ".");
-        				JOptionPane.showMessageDialog(frame1, "Successfully added " + vertexNameField.getText() + " to " + this.currUG.name + ".");
         			} catch (IllegalArgumentException i) {
-        				JOptionPane.showMessageDialog(frame1, this.currDG.name + " does not have that vertex.");
+        				JOptionPane.showMessageDialog(frame1, this.currUG.name + " does not have that vertex.");
         			}
         		}
         	}
@@ -202,9 +229,53 @@ public class Networkify extends JFrame {
 
 
 
-        // addEdgeButton.addActionListener((ActionEvent event) -> {
+        addEdgeButton.addActionListener((ActionEvent event) -> {
+        	JFrame frame1 = new JFrame("Add Edge");
+        	try {
+        		double weight = Double.parseDouble(weightField.getText());
+        		String v1 = (String)addEdgeVertexModel1.getSelectedItem();
+        		String v2 = (String)addEdgeVertexModel2.getSelectedItem();
 
-        // });
+        		if (this.graphType == null) {
+        			JOptionPane.showMessageDialog(frame1, "Please load or create a graph first.");
+        		} else {
+        			if (this.graphType == "DG") {
+        				if (this.currDG.adjacencyList.get(v1).keySet().contains(v2)) {
+        					int replaceWeight = JOptionPane.showConfirmDialog(frame1, "That edge already exists on this graph. Would you like to replace it with a new weight of " + Double.toString(weight) + "?");
+
+        					if (replaceWeight == JOptionPane.YES_OPTION) {
+        						this.currDG.replaceWeight(v1, v2, weight);
+        						JOptionPane.showMessageDialog(frame1, "Successfully replaced edge weight between " + v1 + " and " + v2 + ".");
+        					} else {
+        						return;
+        					}
+        				} else {
+        					this.currDG.addEdge(v1, v2, weight);
+        					JOptionPane.showMessageDialog(frame1, "Successfully added edge between " + v1 + " and " + v2 + ".");
+        				}
+        			}
+        			else {
+        				if (this.currUG.adjacencyList.get(v1).keySet().contains(v2)) {
+        					int replaceWeight = JOptionPane.showConfirmDialog(frame1, "That edge already exists on this graph. Would you like to replace it with a new weight of " + Double.toString(weight) + "?");
+
+        					if (replaceWeight == JOptionPane.YES_OPTION) {
+        						this.currUG.replaceWeight(v1, v2, weight);
+        						JOptionPane.showMessageDialog(frame1, "Successfully replaced edge weight between " + v1 + " and " + v2 + ".");
+        					} else {
+        						return;
+        					}
+        				} else {
+        					this.currUG.addEdge(v1, v2, weight);
+        					JOptionPane.showMessageDialog(frame1, "Successfully added edge between " + v1 + " and " + v2 + ".");
+        				}
+        			}
+        		}
+        	} catch(NumberFormatException e) {
+        		JOptionPane.showMessageDialog(frame1, "That is not a valid edge weight. Please make sure the weight is in proper decimal format.");
+        	} catch(IllegalArgumentException e) {
+        		JOptionPane.showMessageDialog(frame1, "some other error");
+        	}
+        });
 
 
 
@@ -217,31 +288,23 @@ public class Networkify extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
-	public String[] getVertexList() {
-		String[] noGraph = {"Load or create a graph first."};
-		String[] noVertices = {"Please add vertices to your graph first."};
+	private void analysisUI() {
+		JFrame analysisFrame = new JFrame("Table");
+		// Main JPanel.
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(null);
+		analysisFrame.add(mainPanel);
 
-		if (this.graphType == null) {
-			return noGraph;
-		}
-		else if (this.graphType == "DG") {
-			if (this.currDG.getAllVertices().size() == 0) {
-				return noVertices;
-			} else {
-				Set<String> vertexSet = this.currDG.getAllVertices();
-				String[] vertices = vertexSet.toArray(new String[vertexSet.size()]);
-				return vertices;
-			}
-		} else {
-			if (this.currUG.getAllVertices().size() == 0) {
-				return noVertices;
-			} else {
-				Set<String> vertexSet = this.currUG.getAllVertices();
-				String[] vertices = vertexSet.toArray(new String[vertexSet.size()]);
-				return vertices;
-			}
-		}
+
+		analysisFrame.setTitle("Detailed Graph Analysis");
+		analysisFrame.setVisible(true);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		analysisFrame.setSize(500, 300);
+		// setResizable(false);
+		analysisFrame.setLocationRelativeTo(null);
+
 	}
+
 
 
 

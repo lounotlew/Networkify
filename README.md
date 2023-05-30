@@ -9,8 +9,6 @@ A common application of graph theory (and hence a use case for Networkify) is to
 
 This application utilizes Swing for its GUI, and the interactive graph drawer is currently being improved on. It is highly recommended you use the interactive graph drawer for demonstration purposes, as the output cannot be saved, and any bigger graph should be constructed using the V2V (Vertex-to-Vertex) Connector.
 
-Networkify is available for download on [placeholder link]().
-
 Currently Implemented Algorithms:
 
 _Directed Graphs:_
